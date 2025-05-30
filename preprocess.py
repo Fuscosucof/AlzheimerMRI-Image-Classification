@@ -2,8 +2,6 @@
 from huggingface_hub import login
 from datasets import load_dataset
 from transformers import AutoImageProcessor, DefaultDataCollator
-from tensorflow import keras
-from keras import layers
 import numpy as np
 import tensorflow as tf
 from PIL import Image
@@ -33,7 +31,6 @@ normalize = Normalize(mean=image_processor.image_mean, std=image_processor.image
 _transforms = Compose([
     Resize(size),  # Resize while maintaining aspect ratio
     CenterCrop(size),  # Take the center portion
-    ToTensor(),
     normalize
 ])
 def transforms(examples):
@@ -49,19 +46,19 @@ aMRI_test = aMRI_test.with_transform(transforms)
 # Data augmentation
 
 #Extracts the target image dimensions from the image processor configuration.
-train_data_augmentation = keras.Sequential(
+train_data_augmentation = tf.keras.Sequential(
     [
-        layers.Rescaling(scale=1.0 / 128.0, offset=-1),
-        layers.RandomFlip("horizontal"),
-        layers.RandomRotation(factor=0.02),
-        layers.RandomZoom(0.1),
+        tf.keras.layers.Rescaling(scale=1.0 / 128.0, offset=-1),
+        tf.keras.layers.RandomFlip("horizontal"),
+        tf.keras.layers.RandomRotation(factor=0.02),
+        tf.keras.layers.RandomZoom(0.1),
     ],
     name="train_data_augmentation",
 )
 
-val_data_augmentation = keras.Sequential(
+val_data_augmentation = tf.keras.Sequential(
     [
-        layers.Rescaling(scale=1.0 / 128, offset=-1),
+        tf.keras.layers.Rescaling(scale=1.0 / 128, offset=-1),
     ],
     name="val_data_augmentation",
 ) 

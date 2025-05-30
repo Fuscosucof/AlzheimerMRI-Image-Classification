@@ -19,12 +19,14 @@ model = AutoModelForImageClassification.from_pretrained(
     num_labels=len(labels),
     id2label=id2label,
     label2id=label2id,
+    ignore_mismatched_sizes=True
 )
+'''ResNet-50 model was trained on ImageNet (1000 classes) but you're trying to use it for Alzheimer's classification (4 classes).'''
 
 training_args = TrainingArguments(
     output_dir="fusco_alzheimerMRI_model",
     remove_unused_columns=False,
-    evaluation_strategy="epoch",
+    eval_strategy="epoch",
     save_strategy="epoch",
     learning_rate=0.002,
     per_device_train_batch_size=PER_DEVICE_BATCH_SIZE,
@@ -37,7 +39,7 @@ training_args = TrainingArguments(
     metric_for_best_model="accuracy",
     push_to_hub=True,
     seed=42,
-    optim="adamw_hf",
+    optim="adamw_torch",
     adam_beta1=0.9,
     adam_beta2=0.999,
     adam_epsilon=1e-8,
