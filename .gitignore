@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+.venv
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Model files and checkpoints
+*.h5
+*.pth
+*.pt
+*.ckpt
+checkpoints/
+fusco_alzheimerMRI_model/
+runs/
+
+# Data
+*.npy
+*.npz
+*.pkl
+*.csv
+dataset/
+data/
+
+# Logs
+logs/
+*.log
+tensorboard/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# HuggingFace specific
+.cache/
+huggingface/
