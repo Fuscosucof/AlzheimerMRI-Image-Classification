@@ -32,18 +32,6 @@ This project implements a deep learning model for classifying Alzheimer's diseas
 - Input size: 128x128 pixels
 - Image format: RGB (converted from grayscale)
 
-## Training Configuration
-
-```python
-training_args = TrainingArguments(
-    learning_rate=0.002,
-    per_device_train_batch_size=16,
-    gradient_accumulation_steps=4,
-    num_train_epochs=20,
-    warmup_ratio=0.1
-)
-```
-
 ## Setup Instructions
 
 1. **Environment Setup**
