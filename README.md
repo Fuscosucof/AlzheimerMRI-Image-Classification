@@ -1,58 +1,149 @@
-Image classification
-Data source : https://huggingface.co/datasets/Falah/Alzheimer_MRI
+Alzheimer's MRI Image Classification Using ResNet-50
+This project implements a deep learning model for classifying Alzheimer's disease stages using MRI images.
 
-Label :
-'0': Mild_Demented
-'1': Moderate_Demented
-'2': Non_Demented
-'3': Very_Mild_Demented
+Dataset
+Source: Falah/Alzheimer_MRI # Alzheimer's MRI Image Classification Using ResNet-50
 
-# RGB Conversion for MRI Images - Important Consideration
+This project implements a deep learning model for classifying Alzheimer's disease stages using MRI images.
 
-Converting grayscale MRI images to RGB is generally **not recommended** for several reasons:
+## Dataset
 
-1. **Information Preservation**: 
-   - MRI images are inherently grayscale/single-channel
-   - Converting to RGB artificially triples the data without adding new information
-   - May lose precision in intensity values
+- **Source**: [Falah/Alzheimer_MRI](https://huggingface.co/datasets/Falah/Alzheimer_MRI)
+- **Classes**:
+  - Mild Demented (0)
+  - Moderate Demented (1)
+  - Non Demented (2)
+  - Very Mild Demented (3)
+- **Split**: 
+  - Training: 90% of training data
+  - Validation: 10% of training data
+  - Test: Separate test set
 
-2. **Model Efficiency**: 
-   - Processing 3 channels instead of 1 increases computational overhead
-   - Takes more memory unnecessarily
+## Model Architecture
 
-Here's the recommended modification to your code:
+- Base model: ResNet-50 (microsoft/resnet-50)
+- Modified for Alzheimer's classification (4 classes)
+- Input size: 128x128 pixels
+- Image format: RGB (converted from grayscale)
 
-````python
-def preprocess_train(example_batch):
-    """Apply train_transforms across a batch."""
-    images = [
-        train_data_augmentation(convert_to_tf_tensor(image)) for image in example_batch["image"]
-    ]
-    example_batch["pixel_values"] = [tf.transpose(tf.squeeze(image)) for image in images]
-    return example_batch
+## Training Configuration
 
-def convert_to_tf_tensor(image: Image):
-    # Convert to grayscale if not already
-    if image.mode != 'L':
-        image = image.convert('L')
-    np_image = np.array(image)
-    tf_image = tf.convert_to_tensor(np_image)
-    # Add channel dimension for grayscale (1 channel)
-    tf_image = tf.expand_dims(tf_image, -1)
-    # Add batch dimension
-    return tf.expand_dims(tf_image, 0)
-````
+```python
+training_args = TrainingArguments(
+    learning_rate=0.002,
+    per_device_train_batch_size=16,
+    gradient_accumulation_steps=4,
+    num_train_epochs=20,
+    warmup_ratio=0.1
+)
+```
 
-### Key Changes:
-- Removed `.convert("RGB")`
-- Added grayscale check in `convert_to_tf_tensor`
-- Uses 'L' mode (single channel) instead of RGB
-- Properly handles channel dimensionality for the model
+## Setup Instructions
 
-This approach:
-- ✅ Preserves original image information
-- ✅ Reduces memory usage
-- ✅ Improves processing efficiency
-- ✅ Maintains medical imaging integrity
+1. **Environment Setup**
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+2. **Required Dependencies**
+```txt
+transformers
+torch
+torchvision
+datasets
+evaluate
+pillow
+numpy
+```
+
+3. **Training the Model**
+```bash
+python train.py
+```
+
+4. **Testing the Model**
+```bash
+python test.py
+```
+
+## Model Performance
+
+- Training accuracy: ~96%
+- Validation accuracy: ~95%
+- Test accuracy: ~96%
+
+## Important Notes
+
+1. **RGB Conversion Consideration**
+   - MRI images are inherently grayscale
+   - RGB conversion increases computational overhead
+   - Consider modifying ResNet's first layer for grayscale input
+
+2. **Model Limitations**
+   - Potential overfitting due to data augmentation
+   - ResNet-50 might be oversized for this task
+
+3. **Future Improvements**
+   - Implement true grayscale processing
+   - Add more robust data augmentation
+   - Experiment with smaller architectures
+
+## Repository Structure
+
+```
+├── train.py           # Training script
+├── test.py           # Testing script
+├── preprocess.py     # Data preprocessing
+└── requirements.txt  # Dependencies
+```
+
+## Authors
+
+[Fuscosucof]
+
+## Acknowledgments
+
+- HuggingFace Transformers
+- Microsoft ResNet-50 Team
+- Falah for the Alzheimer's MRI dataset
+Classes:
+Mild Demented (0)
+Moderate Demented (1)
+Non Demented (2)
+Very Mild Demented (3)
+Split:
+Training: 90% of training data
+Validation: 10% of training data
+Test: Separate test set
+Model Architecture
+Base model: ResNet-50 (microsoft/resnet-50)
+Modified for Alzheimer's classification (4 classes)
+Input size: 128x128 pixels
+Image format: RGB (converted from grayscale)
+
+
 
 Remember to update your model architecture to expect single-channel input if necessary.
+
+error occurs because your grayscale MRI images (1 channel) don't match ResNet's expected RGB input (3 channels)
+
+Original ResNet: Expects [3, 224, 224] input
+Modified ResNet: Works with [1, 224, 224] input
+
+# Understanding Conv2d Layer Parameters
+
+Let's break down each argument in the convolutional layer:
+
+```python
+nn.Conv2d(
+    in_channels=1,     # Input channels (1 for grayscale)
+    out_channels=64,   # Number of filters/feature maps
+    kernel_size=7,     # Size of the convolving window (7x7)
+    stride=2,          # Step size of the convolution (2 pixels)
+    padding=3,         # Zero-padding added to both sides (3 pixels)
+    bias=False         # No bias term used
+)
+```
+

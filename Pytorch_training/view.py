@@ -6,7 +6,7 @@ from keras import layers
 import numpy as np
 import tensorflow as tf
 from PIL import Image
-from preprocess import train_data_augmentation, _transforms, labels, label2id, id2label, checkpoint, image_processor, convert_to_tf_tensor
+from Pytorch_training.preprocess import train_data_augmentation, labels, label2id, id2label, checkpoint, image_processor, convert_to_tf_tensor
 #login()
 
 aMRI_train = load_dataset("Falah/Alzheimer_MRI", split="train[:90%]")

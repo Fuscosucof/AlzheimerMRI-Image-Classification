@@ -1,7 +1,9 @@
 import evaluate
+from Aceelerate
 import numpy as np
 from transformers import AutoImageProcessor, AutoModelForImageClassification, TrainingArguments, Trainer, create_optimizer
 from preprocess import data_collator, labels, label2id, id2label, checkpoint, image_processor, aMRI_train, aMRI_val, aMRI_test 
+accerelater = Aceelerate.Accelerator()
 accuracy = evaluate.load("accuracy")
 
 PER_DEVICE_BATCH_SIZE = 16
@@ -23,6 +25,8 @@ model = AutoModelForImageClassification.from_pretrained(
 )
 '''ResNet-50 model was trained on ImageNet (1000 classes) but you're trying to use it for Alzheimer's classification (4 classes).'''
 
+
+
 training_args = TrainingArguments(
     output_dir="fusco_alzheimerMRI_model",
     remove_unused_columns=False,
@@ -34,7 +38,7 @@ training_args = TrainingArguments(
     per_device_eval_batch_size=PER_DEVICE_BATCH_SIZE,
     num_train_epochs=20,
     warmup_ratio=0.1,
-    logging_steps=10,
+    logging_steps=288,
     load_best_model_at_end=True,
     metric_for_best_model="accuracy",
     push_to_hub=True,
