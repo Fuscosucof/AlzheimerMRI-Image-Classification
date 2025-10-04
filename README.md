@@ -118,9 +118,6 @@ Input size: 128x128 pixels
 Image format: RGB (converted from grayscale)
 
 
-
-error occurs because your grayscale MRI images (1 channel) don't match ResNet's expected RGB input (3 channels)
-
 Original ResNet: Expects [3, 224, 224] input
 Modified ResNet: Works with [1, 224, 224] input
 
