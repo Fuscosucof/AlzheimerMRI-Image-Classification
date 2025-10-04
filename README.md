@@ -3,9 +3,7 @@ This project implements a deep learning model for classifying Alzheimer's diseas
 
 Disclaimer: So I'm actually a highschooler grade 12 who is learning ML, LLM, AI by trial and error
 This might look like a bad code since I've zero experience literally.
-I followed isntruction and modified some code from hugging face docs, and some help of github copilot to understand some process and know how to train this model.
-
-Please tell me if what part of the process could change and why would it raise an issues or it could be improved!!!
+I followed instruction and modified some code from hugging face docs, and some help of github copilot to understand some process and know how to train this model.
 
 Dataset
 Source: Falah/Alzheimer_MRI # Alzheimer's MRI Image Classification Using ResNet-50
